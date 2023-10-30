@@ -1,0 +1,13 @@
+docker/db_data
+yii-app/WebRoot/assets/*
+yii-app/WebRoot/protected/runtime/*
+yii-app/YiiRoot/vendor/*
+composer.phar
+create-image
+
+# !yii-app/app/assets/.gitignore
+# !yii-app/app/protected/runtime/.gitignore
+# yii-app/app/protected/data/*.db
+# yii-app/app/themes/classic/views/
+# protected/data/schema.mysql.sql
+# protected/data/schema.sqlite.sql
