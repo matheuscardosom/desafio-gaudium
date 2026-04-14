@@ -4,6 +4,8 @@ services:
   web:
     image: nginx
     platform: linux/amd64
+    depends_on:
+      - php
     volumes:
       - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./yii-app:/var/www/html
@@ -11,8 +13,11 @@ services:
       - "8081:80"
 
   php:
-    image: ghcr.io/jvveiga/template-desafio/php-7-0-33:1.0.0
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
     platform: linux/amd64
+    working_dir: /var/www/html/WebRoot
     volumes:
       - ./yii-app:/var/www/html
 
