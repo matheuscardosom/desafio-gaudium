@@ -32,10 +32,7 @@
 			<?php $this->widget('zii.widgets.CMenu', [
 				'items' => [
 					['label' => 'Home', 'url' => ['/site/index']],
-					['label' => 'About', 'url' => ['/site/page', 'view' => 'about']],
-					['label' => 'Contact', 'url' => ['/site/contact']],
-					['label' => 'Login', 'url' => ['/site/login'], 'visible' => Yii::app()->user->isGuest],
-					['label' => 'Logout (' . Yii::app()->user->name . ')', 'url' => ['/site/logout'], 'visible' => !Yii::app()->user->isGuest],
+					['label' => 'Passageiro', 'url' => ['/passageiro/index']],
 				],
 			]); ?>
 		</div>

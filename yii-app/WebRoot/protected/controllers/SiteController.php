@@ -18,6 +18,12 @@ class SiteController extends Controller {
 		$this->render('index');
 	}
 
+	public function actionPassageiro() {
+		$this->layout = '//layouts/column2';
+		$model = new Passageiro;
+		$this->render('/passageiro/view', ['model' => $model]);
+	}
+
 	public function actionError() {
 		if ($error = Yii::app()->errorHandler->error) {
 			if (Yii::app()->request->isAjaxRequest) {
