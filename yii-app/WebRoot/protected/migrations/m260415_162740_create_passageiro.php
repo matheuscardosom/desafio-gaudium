@@ -6,7 +6,7 @@ class m260415_162740_create_passageiro extends CDbMigration
 		$sql = "CREATE TABLE `passageiro` (
 			`id` int(11) NOT NULL AUTO_INCREMENT,
 			`nome` varchar(150) NOT NULL COMMENT 'Nome do passageiro',
-			`data_nascimento` date NOT NULL,
+			`data_nascimento` date NOT NULL COMMENT 'Data de nascimento do passageiro',
 			`email` varchar(100) NOT NULL COMMENT 'Email do passageiro',
 			`telefone` varchar(16) NOT NULL COMMENT 'Telefone do passageiro',
 			`status` char(1) NOT NULL DEFAULT 'A' COMMENT 'Status do passageiro',

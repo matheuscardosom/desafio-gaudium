@@ -4,6 +4,7 @@ return [
 	'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
 	'name' => 'Desafio',
 	'language' => 'pt_br',
+	'timeZone' => 'America/Sao_Paulo',
 
 	'preload' => ['log'],
 

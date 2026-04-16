@@ -33,6 +33,7 @@
 				'items' => [
 					['label' => 'Home', 'url' => ['/site/index']],
 					['label' => 'Passageiro', 'url' => ['/passageiro/index']],
+					['label' => 'Motorista', 'url' => ['/motorista/index']],
 				],
 			]); ?>
 		</div>
