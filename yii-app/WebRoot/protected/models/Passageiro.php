@@ -30,15 +30,16 @@ class Passageiro extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nome, email, telefone, data_hora_status', 'required'),
+			array('nome, data_nascimento, email, telefone, data_hora_status', 'required'),
 			array('nome', 'length', 'max'=>150),
+			array('data_nascimento', 'date', 'format' => 'yyyy-MM-dd', 'message' => 'Data de nascimento inválida.'),
 			array('email', 'email', 'message'=>'O formato do e-mail é inválido.'),
 			array('telefone', 'length', 'max'=>16),
 			array('status', 'length', 'max'=>1),
 			array('obs', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, nome, email, telefone, status, data_hora_status, obs', 'safe', 'on'=>'search'),
+			array('id, nome, data_nascimento, email, telefone, status, data_hora_status, obs', 'safe', 'on'=>'search'),
 
 			array('nome', 'match', 'pattern'=>'/^[a-zA-ZÀ-ÿ]{3,} [a-zA-ZÀ-ÿ]{3,}/', 
               'message'=>'O nome deve ter no mínimo duas palavras, cada uma com no mínimo 3 caracteres.'),
@@ -70,6 +71,7 @@ class Passageiro extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'nome' => 'Nome',
+			'data_nascimento' => 'Data de Nascimento',
 			'email' => 'Email',
 			'telefone' => 'Telefone',
 			'status' => 'Status',
@@ -98,6 +100,7 @@ class Passageiro extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('nome',$this->nome,true);
+		$criteria->compare('data_nascimento',$this->data_nascimento,true);
 		$criteria->compare('email',$this->email,true);
 		$criteria->compare('telefone',$this->telefone,true);
 		$criteria->compare('status',$this->status,true);

@@ -70,8 +70,13 @@ class PassageiroController extends Controller
 		if(isset($_POST['Passageiro']))
 		{
 			$model->attributes=$_POST['Passageiro'];
+
 			$model->data_hora_status = date('Y-m-d H:i:s');
-			
+
+			if(!empty($model->data_nascimento)) {
+				$model->data_nascimento = date('Y-m-d', strtotime($model->data_nascimento));
+			}
+
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}

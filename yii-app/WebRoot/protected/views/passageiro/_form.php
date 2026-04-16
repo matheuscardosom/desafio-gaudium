@@ -26,6 +26,12 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'data_nascimento'); ?>
+		<?php echo $form->dateField($model,'data_nascimento',array('size'=>10,'maxlength'=>10)); ?>
+		<?php echo $form->error($model,'data_nascimento'); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'email'); ?>
 		<?php echo $form->textField($model,'email',array('size'=>60,'maxlength'=>100)); ?>
 		<?php echo $form->error($model,'email'); ?>
