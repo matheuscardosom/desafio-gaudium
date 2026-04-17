@@ -28,7 +28,7 @@ class CorridaController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','listar','create'),
+				'actions'=>array('index','view','listar','create','finalizarCorrida'),
 				'users'=>array('*'),
 			),
 			// array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -53,53 +53,6 @@ class CorridaController extends Controller
 	{
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
-		));
-	}
-
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	// public function actionCreate()
-	// {
-	// 	$model=new Corrida;
-
-	// 	// Uncomment the following line if AJAX validation is needed
-	// 	// $this->performAjaxValidation($model);
-
-	// 	if (isset($_POST['Corrida']))
-	// 	{
-	// 		$model->attributes=$_POST['Corrida'];
-	// 		if ($model->save())
-	// 			$this->redirect(array('view','id'=>$model->id));
-	// 	}
-
-	// 	$this->render('create',array(
-	// 		'model'=>$model,
-	// 	));
-	// }
-
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if (isset($_POST['Corrida']))
-		{
-			$model->attributes=$_POST['Corrida'];
-			if ($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
 		));
 	}
 
@@ -174,22 +127,7 @@ class CorridaController extends Controller
 	public function actionCreate() {
 		header('Content-Type: application/json');
 
-    	$tokenEnviado = isset($_SERVER['HTTP_API_TOKEN']) ? $_SERVER['HTTP_API_TOKEN'] : null;
-    	$caminhoArquivo = Yii::getPathOfAlias('application.config') . '/secret.txt';
-    
-    	if (!file_exists($caminhoArquivo)) {
-        	http_response_code(400);
-        	echo CJSON::encode(['sucesso' => false, 'erro' => 'Configuração de segurança ausente no servidor.']);
-        	Yii::app()->end();
-    	}
-
-    	$tokenEsperado = trim(file_get_contents($caminhoArquivo));
-
-    	if (empty($tokenEnviado) || $tokenEnviado !== $tokenEsperado) {
-        	http_response_code(400);
-        	echo CJSON::encode(['sucesso' => false, 'erro' => 'Token de API inválido ou ausente.']);
-        	Yii::app()->end();
-    	}
+    	$this->validaToken();
 
 		$jsonEntrada = file_get_contents('php://input');
 		$dados = CJSON::decode($jsonEntrada);
@@ -326,6 +264,25 @@ class CorridaController extends Controller
 		$distancia = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) + cos($latOrigemRad) * cos($latDestinoRad) * pow(sin($lngDelta / 2), 2)));
 		
 		return $distancia * $earthRadius;
+	}
+
+	private function validaToken() {
+		$tokenEnviado = isset($_SERVER['HTTP_API_TOKEN']) ? $_SERVER['HTTP_API_TOKEN'] : null;
+    	$caminhoArquivo = Yii::getPathOfAlias('application.config') . '/secret.txt';
+    
+    	if (!file_exists($caminhoArquivo)) {
+        	http_response_code(400);
+        	echo CJSON::encode(['sucesso' => false, 'erro' => 'Configuração de segurança ausente no servidor.']);
+        	Yii::app()->end();
+    	}
+
+    	$tokenEsperado = trim(file_get_contents($caminhoArquivo));
+
+    	if (empty($tokenEnviado) || $tokenEnviado !== $tokenEsperado) {
+        	http_response_code(400);
+        	echo CJSON::encode(['sucesso' => false, 'erro' => 'Token de API inválido ou ausente.']);
+        	Yii::app()->end();
+    	}
 	}
 
 	public function actionListar()
