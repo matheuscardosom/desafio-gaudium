@@ -31,9 +31,9 @@
 		<div id="mainmenu">
 			<?php $this->widget('zii.widgets.CMenu', [
 				'items' => [
-					['label' => 'Home', 'url' => ['/site/index']],
-					['label' => 'Passageiro', 'url' => ['/passageiro/index']],
-					['label' => 'Motorista', 'url' => ['/motorista/index']],
+					['label' => 'Corridas', 'url' => ['/corrida/index']],
+					['label' => 'Passageiros', 'url' => ['/passageiro/index']],
+					['label' => 'Motoristas', 'url' => ['/motorista/index']],
 				],
 			]); ?>
 		</div>

@@ -74,10 +74,17 @@ class CorridaController extends Controller
 	 * Lists all models.
 	 */
 	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('Corrida');
+	{ 
+		$model = new Corrida('search');
+		$model->unsetAttributes();
+
+		if (isset($_GET['Corrida'])) {
+			$model->attributes = $_GET['Corrida'];
+		}
+		
 		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+			'model'=>$model,
+			'dataProvider'=>$model->search(),
 		));
 	}
 

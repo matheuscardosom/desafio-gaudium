@@ -57,8 +57,8 @@ class Corrida extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'idMotorista' => array(self::BELONGS_TO, 'Motorista', 'id_motorista'),
-			'idPassageiro' => array(self::BELONGS_TO, 'Passageiro', 'id_passageiro'),
+			'motoristaRel' => array(self::BELONGS_TO, 'Motorista', 'id_motorista'),
+			'passageiroRel' => array(self::BELONGS_TO, 'Passageiro', 'id_passageiro'),
 		);
 	}
 
@@ -99,19 +99,35 @@ class Corrida extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+		$criteria->with = array('passageiroRel', 'motoristaRel');
+
 		$criteria->compare('id',$this->id);
 		$criteria->compare('id_passageiro',$this->id_passageiro);
 		$criteria->compare('id_motorista',$this->id_motorista);
 		$criteria->compare('endereco_origem',$this->endereco_origem,true);
 		$criteria->compare('endereco_destino',$this->endereco_destino,true);
-		$criteria->compare('data_hora_inicio',$this->data_hora_inicio,true);
 		$criteria->compare('status',$this->status,true);
 		$criteria->compare('previsao_chegada_destino',$this->previsao_chegada_destino,true);
 		$criteria->compare('tarifa',$this->tarifa,true);
-		$criteria->compare('data_hora_fim',$this->data_hora_fim,true);
+
+		$data_inicio = str_replace('T', ' ', $this->data_hora_inicio);
+		$data_fim = str_replace('T', ' ', $this->data_hora_fim);
+
+		if (!empty($this->data_hora_inicio) && !empty($this->data_hora_fim)) {
+			$criteria->addBetweenCondition('t.data_hora_inicio', $data_inicio, $data_fim);
+		} elseif (!empty($this->data_hora_inicio)) {
+			$criteria->addCondition('t.data_hora_inicio >= :data_hora_inicio');
+			$criteria->params[':data_hora_inicio'] = $data_inicio;
+		} elseif (!empty($this->data_hora_fim)) {
+			$criteria->addCondition('t.data_hora_inicio <= :data_hora_fim');
+			$criteria->params[':data_hora_fim'] = $data_fim;
+		}
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'t.status = "Em andamento" DESC, t.data_hora_inicio DESC',
+			),
 		));
 	}
 
