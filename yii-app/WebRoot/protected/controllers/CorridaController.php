@@ -264,7 +264,7 @@ class CorridaController extends Controller
 
 		if (!$corrida) {
 			http_response_code(400);
-			echo CJSON::encode(['sucesso' => false, 'erro' => 'Corrida não encontrada.']);
+			echo CJSON::encode(['sucesso' => false, 'erro' => 'Corrida não existe.']);
 			Yii::app()->end();
 		}
 

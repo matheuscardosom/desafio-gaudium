@@ -51,8 +51,11 @@ class PassageiroController extends Controller
 	 */
 	public function actionView($id)
 	{
+		$corridas = Corrida::model()->findAllByAttributes(array('id_passageiro' => $id), array('order' => 'id DESC', 'limit' => 5));
+
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+			'corridas' => $corridas,
 		));
 	}
 

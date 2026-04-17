@@ -31,3 +31,30 @@ $this->menu=array(
 		'obs',
 	),
 )); ?>
+
+
+
+<h1 style="margin-top: 20px;">Últimas corridas</h1>
+
+<table>
+	<thead>
+		<tr>
+			<th>Data/Hora de início</th>
+			<th>Destino</th>
+			<th>Status</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach ($corridas as $corrida): ?>
+			<tr>
+				<td><?php echo $corrida->data_hora_inicio; ?></td>
+				<td><?php echo $corrida->endereco_destino; ?></td>
+				<td><?php echo $corrida->status; ?></td>
+			</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
+
+<?php if (empty($corridas)): ?>
+    <p>Você ainda não realizou nenhuma corrida.</p>
+<?php endif; ?>
