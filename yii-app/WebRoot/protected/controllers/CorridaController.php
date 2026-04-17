@@ -249,6 +249,59 @@ class CorridaController extends Controller
 		Yii::app()->end();
 	}
 
+	public function actionFinalizarCorrida() {
+		header('Content-Type: application/json');
+
+		$this->validaToken();
+		
+		$jsonEntrada = file_get_contents('php://input');
+		$dados = CJSON::decode($jsonEntrada);
+
+		$idCorrida = $dados['corrida']['id'];
+		$idMotorista = $dados['motorista']['id'];
+
+		$corrida = Corrida::model()->findByPk($idCorrida);
+
+		if (!$corrida) {
+			http_response_code(400);
+			echo CJSON::encode(['sucesso' => false, 'erro' => 'Corrida não encontrada.']);
+			Yii::app()->end();
+		}
+
+		if ($corrida->id_motorista != $idMotorista) {
+			http_response_code(400);
+			echo CJSON::encode(['sucesso' => false, 'erro' => 'Motorista não corresponde à corrida.']);
+			Yii::app()->end();
+		}
+
+		if ($corrida->status != 'Em andamento') {
+			http_response_code(400);
+			echo CJSON::encode(['sucesso' => false, 'erro' => 'Corrida não está em andamento.']);
+			Yii::app()->end();
+		}
+
+		$corrida->status = 'Finalizada';
+		$corrida->data_hora_fim = date('Y-m-d H:i:s');
+
+		if (!$corrida->save()) {
+			http_response_code(400);
+			echo CJSON::encode([
+				'sucesso' => false, 
+				'erro' => 'Erro ao finalizar corrida.',
+				'detalhes' => $corrida->getErrors()
+			]);
+			Yii::app()->end();
+		}
+
+		http_response_code(200);
+		echo CJSON::encode([
+			'sucesso' => true,
+			'mensagem' => 'Corrida finalizada com sucesso.'
+		]);
+
+		Yii::app()->end();
+	}
+
 	private function calcularDistancia($latOrigem, $lngOrigem, $latDestino, $lngDestino) {
 
 		$earthRadius = 6371000;
